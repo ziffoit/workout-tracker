@@ -8,7 +8,7 @@ async function initWorkout() {
 
     const workoutSummary = {
       date: formatDate(lastWorkout.day),
-      totalDuration: lastWorkout.totalDuration,
+      totalDuration: calculateTotalDuration(lastWorkout.exercises),
       numExercises: lastWorkout.exercises.length,
       ...tallyExercises(lastWorkout.exercises)
     };
@@ -19,13 +19,23 @@ async function initWorkout() {
   }
 }
 
+function calculateTotalDuration(exercises) {
+
+    return exercises.reduce((total, { exercise, duration }) => {
+      if (exercise === 'cardio') {
+        return total + duration;
+      }
+      return total;
+    }, 0);
+}
+
 function tallyExercises(exercises) {
   const tallied = exercises.reduce((acc, curr) => {
-    if (curr.type === "resistance") {
+    if (curr.exercise === "resistance") {
       acc.totalWeight = (acc.totalWeight || 0) + curr.weight;
       acc.totalSets = (acc.totalSets || 0) + curr.sets;
       acc.totalReps = (acc.totalReps || 0) + curr.reps;
-    } else if (curr.type === "cardio") {
+    } else if (curr.exercise === "cardio") {
       acc.totalDistance = (acc.totalDistance || 0) + curr.distance;
     }
     return acc;

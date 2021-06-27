@@ -2,8 +2,8 @@ function calculateTotalWeight(data) {
   const totals = [];
 
   data.forEach((workout) => {
-    const workoutTotal = workout.exercises.reduce((total, { type, weight }) => {
-      if (type === 'resistance') {
+    const workoutTotal = workout.exercises.reduce((total, { exercise, weight }) => {
+      if (exercise === 'resistance') {
         return total + weight;
       }
       return total;
@@ -15,8 +15,25 @@ function calculateTotalWeight(data) {
   return totals;
 }
 
+function calculateTotalDuration(data) {
+  const totals = [];
+
+  data.forEach((workout) => {
+    const workoutTotal = workout.exercises.reduce((total, { exercise, duration }) => {
+      if (exercise === 'cardio') {
+        return total + duration;
+      }
+      return total;
+    }, 0);
+
+    totals.push(workoutTotal);
+  });
+
+  return totals;
+}
+
 function populateChart(data) {
-  const durations = data.map(({ totalDuration }) => totalDuration);
+  const durations = calculateTotalDuration(data);
   const pounds = calculateTotalWeight(data);
 
   const line = document.querySelector('#canvas').getContext('2d');
