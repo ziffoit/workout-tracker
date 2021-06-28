@@ -12,7 +12,7 @@ const distanceInput = document.querySelector("#distance");
 const completeButton = document.querySelector("button.complete");
 const addButton = document.querySelector("button.add-another");
 const toast = document.querySelector("#toast");
-const newWorkout = document.querySelector(".new-workout")
+const newWorkout = document.querySelector(".new-workout") // THIS IS NEVER USED!
 
 let workoutType = null;
 let shouldNavigateAway = false;
@@ -20,7 +20,8 @@ let shouldNavigateAway = false;
 async function initExercise() {
   let workout;
 
-  if (location.search.split("=")[1] === undefined) {
+  const workoutId = location.search.split("=")[1]
+  if (workoutId === undefined || workoutId === "undefined") {
     workout = await API.createWorkout()
     console.log(workout)
   }

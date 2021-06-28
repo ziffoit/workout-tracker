@@ -18,19 +18,19 @@ router.put("/:id", (req, res) => {
             return;
         }
         workout.exercises = workout.exercises.concat(req.body);
-        workout.save(callback);
-        res.json()
+        workout.save();
+        res.json({})
     });
 });
 
 router.post("/", (req, res) => {
-    const fitness = new Fitness({ exercises: [req.body] });
-    fitness.save(function (err) {
-        if (err) {
-            res.status(400).json(err);
-        } else {
-            res.json()
-        }
+    // const fitness = new Fitness({ exercises: [req.body] });
+    Fitness.collection.insertOne({ exercises: [] })
+    .then((result) => {
+        res.json({"_id": result.insertedId});
+    })
+    .catch((err) => {
+        res.status(400).json(err);
     });
 });
 
